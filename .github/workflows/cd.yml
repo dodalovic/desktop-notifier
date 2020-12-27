@@ -40,8 +40,14 @@ jobs:
           graalvm-version: "20.3.0"
           java-version: "java11"
           native-image: "true"
+      - uses: suisei-cn/actions-download-file@v1
+        id: downloadfile  # Remember to give an ID if you need the output
+        name: Download the pico-cli jar
+        with:
+          url: "https://search.maven.org/remotecontent?filepath=info/picocli/picocli/4.5.2/picocli-4.5.2.jar"
+          target: build/
       - name: Build image
-        run: make build-native-exec
+        run: ${GRAALVM_HOME}/bin/native-image -cp ./build/picocli-4.5.2.jar --static -jar ./build/libs/desktop-notifier-1.0-SNAPSHOT-all.jar desktop-notifier
       - name: Upload jar binary
         uses: actions/upload-release-asset@v1
         env:
