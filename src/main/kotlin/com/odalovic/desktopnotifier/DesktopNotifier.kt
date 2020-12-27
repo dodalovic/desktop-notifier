@@ -4,7 +4,6 @@ import com.charleskorn.kaml.Yaml
 import fr.jcgay.notification.*
 import picocli.CommandLine
 import java.io.File
-import java.net.URL
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
@@ -25,7 +24,7 @@ class DesktopNotifier : Runnable {
     private lateinit var contentIdentifier: String
 
     private val icon = Icon.create(
-        URL("https://cdn.pixabay.com/photo/2017/01/10/03/54/icon-1968243_1280.png"),
+        this::class.java.getResource("/info.png"),
         "ok"
     )
 
