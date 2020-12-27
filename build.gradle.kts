@@ -22,10 +22,6 @@ dependencies {
     implementation("info.picocli:picocli:4.5.2")
     annotationProcessor("info.picocli:picocli-codegen:4.5.2")
     kapt("info.picocli:picocli-codegen:4.5.2")
-    implementation("org.apache.pdfbox:pdfbox:2.0.22")
-    implementation("com.github.dhorions:boxable:1.6")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.0")
-    implementation("com.charleskorn.kaml:kaml:0.26.0")
     implementation("fr.jcgay.send-notification:send-notification:0.16.0")
     implementation("org.slf4j:slf4j-simple:$slf4jVersion")
 }
