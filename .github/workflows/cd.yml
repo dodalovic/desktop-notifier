@@ -34,8 +34,15 @@ jobs:
           body: Initial release
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Setup graalvm-ce
+        uses: rinx/setup-graalvm-ce@v0.0.5
+        with:
+          graalvm-version: "20.3.0"
+          java-version: "java11"
+          native-image: "true"
+            - name: Build image
+              run: make build-native-executable
+      - name: Upload jar binary
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -44,3 +51,12 @@ jobs:
           asset_path: ./build/libs/desktop-notifier-1.0-SNAPSHOT-all.jar
           asset_name: desktop-notifier.jar
           asset_content_type: application/zip
+      - name: Upload native binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./desktop-notifier
+          asset_name: desktop-notifier
+          asset_content_type: application/binary
