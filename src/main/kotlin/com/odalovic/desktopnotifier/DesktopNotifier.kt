@@ -38,7 +38,7 @@ class DesktopNotifier : Runnable {
         .build()
 
     private val notifier: Notifier =
-        SendNotification().setApplication(application).setChosenNotifier("notifysend").initNotifier()
+        SendNotification().setApplication(application).initNotifier()
 
     init {
         initConfigDir()
