@@ -1,0 +1,6 @@
+notificationFrequencyMillis: 20000
+content:
+  LEARN-GERMAN:
+    items:
+      - t: Hallo
+        m: Hello
