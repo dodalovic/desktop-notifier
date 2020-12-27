@@ -1,4 +1,4 @@
-name: Continous deployment
+name: Continous build & release
 
 on:
   push:
