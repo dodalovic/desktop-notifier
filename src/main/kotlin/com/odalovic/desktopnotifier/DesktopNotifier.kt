@@ -1,6 +1,5 @@
 package com.odalovic.desktopnotifier
 
-import com.charleskorn.kaml.Yaml
 import fr.jcgay.notification.*
 import picocli.CommandLine
 import java.io.File
@@ -15,20 +14,20 @@ import kotlin.system.exitProcess
     description = ["Shows desktop notifications"]
 )
 class DesktopNotifier : Runnable {
-    private var config: Config
 
     @CommandLine.Option(
-        names = ["--content-identifier", "-c"],
-        description = ["Content identifier inside config file. e.g: LEARN-GERMAN"]
+        names = ["--content-file", "-c"],
+        description = ["An absolute path to the content file containing items to be shown as notifications"]
     )
-    private lateinit var contentIdentifier: String
+    private lateinit var contentFile: File
 
-    private val icon = Icon.create(
-        this::class.java.getResource("/info.png"),
-        "ok"
+    @CommandLine.Option(
+        names = ["--change-frequency", "-f"],
+        description = ["Duration in seconds between the two notifications"]
     )
+    private var changeFrequencyInSeconds: Long = 10
 
-    private var templateFilePath: String = "${System.getProperty("user.home")}/.desktop-notifier/config.yml"
+    private val icon = Icon.create(this::class.java.getResource("/info.png"), "ok")
 
     private val application = Application.builder()
         .id("desktop-notifier")
@@ -40,43 +39,20 @@ class DesktopNotifier : Runnable {
     private val notifier: Notifier =
         SendNotification().setApplication(application).initNotifier()
 
-    init {
-        initConfigDir()
-        config = Yaml.default.decodeFromString(
-            Config.serializer(),
-            File(templateFilePath).readText()
-        )
-    }
-
     override fun run() = try {
         while (true) {
-            val content =
-                config.content[contentIdentifier] ?: error("No such content identifier $contentIdentifier")
-            for (item in content.items) {
-                notifier.send(notification(item))
-                Thread.sleep(config.notificationFrequencyMillis)
+            for (line in contentFile.readLines()) {
+                val (key, value) = line.split("=")
+                notifier.send(notification(key, value))
+                Thread.sleep(TimeUnit.SECONDS.toMillis(changeFrequencyInSeconds))
             }
         }
     } finally {
         notifier.close()
     }
 
-    private fun notification(item: Item) = Notification.builder()
-        .icon(icon).title(item.t).message(item.m).level(Notification.Level.INFO).subtitle("subtitle").build()
-
-    private fun initConfigDir() {
-        val templateDir = File("${System.getProperty("user.home")}/.desktop-notifier")
-        if (!templateDir.exists()) {
-            templateDir.mkdirs()
-            println("Config directory created: (${templateDir.absolutePath})")
-        }
-        val templateFileInConfigDir = File("${templateDir.absolutePath}/config.yml")
-        if (!templateFileInConfigDir.exists()) {
-            val templateContent = this::class.java.getResource("/template.yml").readText()
-            templateFileInConfigDir.writeText(templateContent)
-            println("Created non-existing config ${templateFileInConfigDir.absolutePath}")
-        }
-    }
+    private fun notification(title: String, message: String) = Notification.builder()
+        .icon(icon).title(title).message(message).level(Notification.Level.INFO).subtitle("subtitle").build()
 }
 
 fun main(args: Array<String>): Unit = exitProcess(CommandLine(DesktopNotifier()).execute(*args))

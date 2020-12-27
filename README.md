@@ -24,15 +24,25 @@ $ make build-jar
 ### Execute java executable
 
 ```shell
-$ make desktop-notifier -c LEARN-GERMAN
+$ make desktop-notifier ARGS="-c /full/path/to/file/containing/items/to/display"
 ```
 
 #### Parameters
 
-* `[REQUIRED]` `--content-identifier` or `-c`
+* `[REQUIRED]` `--content-file` or `-c`
 
-  Content identifier inside `${HOME}/.desktop-notifier/config.yml`, direct keys inside `content` node,
-  e.g: `LEARN-GERMAN`
+  An absolute path to the content file containing items to be shown as notifications
+  
+  Each line in the file becomes one desktop notification. An example file content:
+
+  ```
+  Guten Abend=Good evening
+  Wie geht's=How's it going
+  ```
+
+* `[OPTIONAL]` `--change-frequency` or `-f`
+
+  Duration in seconds between the two notifications
 
 ### Build native executable (requires GraalVM configured)
 
@@ -44,4 +54,8 @@ After installing and configuring, run the following:
 $ make build-native-exec
 ```
 
-This will generate `desktop-notifier` file in the project root, which can be run via `./desktop-notifier -c LEARN-GERMAN`
+This will generate `desktop-notifier` file in the project root, which can be run via:
+
+```shell
+$ ./desktop-notifier -c /full/path/to/file/containing/items/to/display
+```
