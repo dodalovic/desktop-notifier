@@ -40,8 +40,8 @@ jobs:
           graalvm-version: "20.3.0"
           java-version: "java11"
           native-image: "true"
-            - name: Build image
-              run: make build-native-executable
+      - name: Build image
+        run: make build-native-executable
       - name: Upload jar binary
         uses: actions/upload-release-asset@v1
         env:
