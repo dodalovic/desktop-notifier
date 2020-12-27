@@ -2,6 +2,8 @@
 
 Intended for periodical display of desktop notifications with user defined content
 
+![Screenshot](screenshot.png)
+
 Show system notifications on a scheduled basis
 
 Notifications can contain anything user would like displayed. There is one configuration file which contains the
