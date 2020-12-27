@@ -41,7 +41,7 @@ jobs:
           java-version: "java11"
           native-image: "true"
       - name: Build image
-        run: make build-native-executable
+        run: make build-native-exec
       - name: Upload jar binary
         uses: actions/upload-release-asset@v1
         env:
