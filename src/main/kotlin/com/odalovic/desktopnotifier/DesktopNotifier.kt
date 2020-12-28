@@ -27,13 +27,19 @@ class DesktopNotifier : Runnable {
     )
     private var changeFrequencyInSeconds: Long = 10
 
+    @CommandLine.Option(
+        names = ["--notification-duration", "-d"],
+        description = ["How long (in seconds) should a single notification be displayed"]
+    )
+    private var notificationDurationInSeconds: Long = 5
+
     private val icon = Icon.create(this::class.java.getResource("/info.png"), "ok")
 
     private val application = Application.builder()
         .id("desktop-notifier")
         .name("Desktop notifier")
         .icon(icon)
-        .timeout(TimeUnit.SECONDS.toMillis(5))
+        .timeout(TimeUnit.SECONDS.toMillis(notificationDurationInSeconds))
         .build()
 
     private val notifier: Notifier =

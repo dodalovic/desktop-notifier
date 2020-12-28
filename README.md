@@ -44,6 +44,10 @@ $ make desktop-notifier ARGS="-c /full/path/to/file/containing/items/to/display"
 
   Duration in seconds between the two notifications
 
+* `[OPTIONAL]` `--notification-duration` or `-d`
+
+  How long (in seconds) should a single notification be displayed
+
 ### Build native executable (requires GraalVM configured)
 
 Read [here](https://quarkus.io/guides/building-native-image#configuring-graalvm) how to install & configure GraalVM
